@@ -2,68 +2,68 @@
     "name": "antigravity-status",
     "displayName": "Antigravity Status",
     "description": "Monitor Antigravity AI quota usage in the status bar",
-    "version": "1.0.0",
-    "publisher": "AntigravityStatus",
+    "version": "0.0.1",
+    "publisher": "YoRuHub",
+    "license": "MIT",
     "icon": "assets/icon.png",
     "engines": {
-        "vscode": "^1.90.0"
+        "vscode": "^1.80.0"
     },
     "categories": [
         "Other"
     ],
-    "license": "MIT",
     "keywords": [
         "antigravity",
-        "windsurf",
-        "cursor",
         "ai",
         "quota",
         "monitor"
     ],
+    "bugs": {
+        "url": "https://github.com/YoRuHub/antigravity-status/issues"
+    },
+    "homepage": "https://github.com/YoRuHub/antigravity-status/blob/main/README.md",
     "repository": {
         "type": "git",
         "url": "https://github.com/YoRuHub/antigravity-status.git"
     },
-    "activationEvents": [
-        "onStartupFinished"
-    ],
+    "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
                 "command": "antigravityStatus.refresh",
-                "title": "%antigravityStatus.commands.refresh.title%",
+                "title": "Refresh Quota",
                 "category": "Antigravity Status",
                 "icon": "$(sync)"
             },
             {
                 "command": "antigravityStatus.showDetails",
-                "title": "%antigravityStatus.commands.showDetails.title%",
+                "title": "Show Quota Details",
                 "category": "Antigravity Status",
                 "icon": "$(info)"
             },
             {
                 "command": "antigravityStatus.configureModels",
-                "title": "%antigravityStatus.commands.configureModels.title%",
+                "title": "Configure Visible Models",
                 "category": "Antigravity Status",
                 "icon": "$(gear)"
             }
         ],
         "configuration": {
-            "title": "%antigravityStatus.configuration.title%",
+            "title": "Antigravity Status",
             "properties": {
                 "antigravityStatus.refreshInterval": {
                     "type": "number",
                     "default": 120,
                     "minimum": 30,
                     "maximum": 3600,
-                    "description": "%antigravityStatus.configuration.refreshInterval.description%",
+                    "description": "Interval in seconds to refresh quota data (30-3600).",
                     "order": 1
                 },
                 "antigravityStatus.showNotifications": {
                     "type": "boolean",
                     "default": true,
-                    "description": "%antigravityStatus.configuration.showNotifications.description%",
+                    "description": "Show notification when quota remains below the notification threshold.",
                     "order": 5
                 },
                 "antigravityStatus.notificationThreshold": {
@@ -71,7 +71,7 @@
                     "default": 30,
                     "minimum": 1,
                     "maximum": 100,
-                    "description": "%antigravityStatus.configuration.notificationThreshold.description%",
+                    "description": "Threshold percentage for sending notifications (1-100).",
                     "order": 6
                 },
                 "antigravityStatus.statusBarPosition": {
@@ -81,7 +81,7 @@
                         "right"
                     ],
                     "default": "right",
-                    "description": "%antigravityStatus.configuration.statusBarPosition.description%",
+                    "description": "The alignment of the status bar item (left or right).",
                     "order": 7
                 },
                 "antigravityStatus.hiddenModels": {
@@ -90,7 +90,7 @@
                         "type": "string"
                     },
                     "default": [],
-                    "description": "%antigravityStatus.configuration.hiddenModels.description%",
+                    "description": "List of model IDs to hide from the status bar.",
                     "order": 10
                 },
                 "antigravityStatus.language": {
@@ -101,7 +101,7 @@
                         "Japanese"
                     ],
                     "default": "Auto",
-                    "description": "%antigravityStatus.configuration.language.description%",
+                    "description": "The display language for the extension UI.",
                     "order": 15
                 }
             }
@@ -117,7 +117,7 @@
     },
     "devDependencies": {
         "@types/node": "^20.0.0",
-        "@types/vscode": "^1.90.0",
+        "@types/vscode": "^1.80.0",
         "@typescript-eslint/eslint-plugin": "^7.0.0",
         "@typescript-eslint/parser": "^7.0.0",
         "eslint": "^8.57.0",

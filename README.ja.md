@@ -7,7 +7,7 @@
  Antigravity エディタの AI クォータ使用状況をステータスバーでリアルタイムに監視
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gray.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=flat-square)](https://github.com/yoruhub/antigravity-status)
+[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?style=flat-square)](https://github.com/YoRuHub/antigravity-status)
 [![Platform: Antigravity](https://img.shields.io/badge/Platform-Antigravity-0052cc.svg?style=flat-square)](https://github.com/yoruhub/antigravity-status)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-green.svg?style=flat-square)](https://nodejs.org/)
 [![VS Code](https://img.shields.io/badge/VS%20Code-%3E%3D1.90.0-007acc.svg?style=flat-square)](https://code.visualstudio.com/)
@@ -69,7 +69,7 @@ Antigravity エディタを起動すると、自動的にバックグラウン�
 ### パッケージ版
 .vsix ファイルを使用してインストールする場合：
 ```bash
-antigravity --install-extension antigravity-status-1.0.0.vsix
+antigravity --install-extension antigravity-status-0.0.1.vsix
 ```
 
 ### 開発版
