@@ -5,7 +5,7 @@ class I18nManager {
     private currentLanguage: Language = 'en';
 
     constructor() {
-        this.updateLanguage();
+        // Delay initialization until extension activates to avoid top-level API crashes
     }
 
     /**

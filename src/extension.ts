@@ -154,7 +154,7 @@ function showLoading(): void {
         const alignment = config.statusBarPosition === 'left'
             ? vscode.StatusBarAlignment.Left
             : vscode.StatusBarAlignment.Right;
-        loadingStatusBarItem = vscode.window.createStatusBarItem(alignment, 100);
+        loadingStatusBarItem = vscode.window.createStatusBarItem('antigravity-status-loading', alignment, 100);
         loadingStatusBarItem.name = 'Antigravity Quota';
         loadingStatusBarItem.command = 'antigravityStatus.showDetails';
         extensionContext.subscriptions.push(loadingStatusBarItem);
@@ -229,7 +229,7 @@ function updateStatusBar(snapshot: QuotaSnapshot, config: ExtensionConfig): void
         const model = models[i];
         const priority = config.statusBarPosition === 'right' ? 100 - i : 100 + i;
 
-        const item = vscode.window.createStatusBarItem(alignment, priority);
+        const item = vscode.window.createStatusBarItem(`antigravity-status-quota-${model.modelId}`, alignment, priority);
         item.name = `Antigravity: ${model.label}`;
         item.command = 'antigravityStatus.configureModels';
 
@@ -502,57 +502,68 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         net.setDefaultAutoSelectFamilyAttemptTimeout(1000);
     }
 
-    // Create output channel
-    outputChannel = vscode.window.createOutputChannel('Antigravity Status');
-    context.subscriptions.push(outputChannel);
+    try {
+        // Create output channel FIRST so we can log errors
+        outputChannel = vscode.window.createOutputChannel('Antigravity Status');
+        context.subscriptions.push(outputChannel);
 
-    // Show loading indicator initially
-    showLoading();
+        // Initialize i18n now that APIs are safe
+        i18n.updateLanguage();
+        log('Antigravity Status: i18n initialized');
 
-    // Register commands
-    const refreshCommand = vscode.commands.registerCommand('antigravityStatus.refresh', () => {
-        refreshQuota();
-    });
-    context.subscriptions.push(refreshCommand);
+        // Show loading indicator initially
+        showLoading();
 
-    const showDetailsCommand = vscode.commands.registerCommand('antigravityStatus.showDetails', () => {
-        showQuotaDetails();
-    });
-    context.subscriptions.push(showDetailsCommand);
-
-    const configureModelsCommand = vscode.commands.registerCommand('antigravityStatus.configureModels', () => {
-        configureVisibleModels();
-    });
-    context.subscriptions.push(configureModelsCommand);
-
-    const openSettingsCommand = vscode.commands.registerCommand('antigravityStatus.openSettings', () => {
-        openExtensionSettings();
-    });
-    context.subscriptions.push(openSettingsCommand);
-
-    // Watch for configuration changes
-    const configWatcher = vscode.workspace.onDidChangeConfiguration((e) => {
-        if (e.affectsConfiguration('antigravityStatus.language')) {
-            i18n.updateLanguage();
-            refreshQuota(); // Redraw UI with new language
-        }
-        if (e.affectsConfiguration('antigravityStatus.statusBarPosition')) {
-            // Re-create items to apply new position
-            clearStatusBarItems();
-            if (loadingStatusBarItem) {
-                loadingStatusBarItem.dispose();
-                loadingStatusBarItem = null;
-            }
+        // Register commands
+        const refreshCommand = vscode.commands.registerCommand('antigravityStatus.refresh', () => {
             refreshQuota();
-        }
-        if (e.affectsConfiguration('antigravityStatus.refreshInterval')) {
-            startRefreshTimer();
-        }
-    });
-    context.subscriptions.push(configWatcher);
+        });
+        context.subscriptions.push(refreshCommand);
 
-    // Start refresh timer
-    startRefreshTimer();
+        const showDetailsCommand = vscode.commands.registerCommand('antigravityStatus.showDetails', () => {
+            showQuotaDetails();
+        });
+        context.subscriptions.push(showDetailsCommand);
+
+        const configureModelsCommand = vscode.commands.registerCommand('antigravityStatus.configureModels', () => {
+            configureVisibleModels();
+        });
+        context.subscriptions.push(configureModelsCommand);
+
+        const openSettingsCommand = vscode.commands.registerCommand('antigravityStatus.openSettings', () => {
+            openExtensionSettings();
+        });
+        context.subscriptions.push(openSettingsCommand);
+
+        // Watch for configuration changes
+        const configWatcher = vscode.workspace.onDidChangeConfiguration((e) => {
+            if (e.affectsConfiguration('antigravityStatus.language')) {
+                i18n.updateLanguage();
+                refreshQuota(); // Redraw UI with new language
+            }
+            if (e.affectsConfiguration('antigravityStatus.statusBarPosition')) {
+                // Re-create items to apply new position
+                clearStatusBarItems();
+                if (loadingStatusBarItem) {
+                    loadingStatusBarItem.dispose();
+                    loadingStatusBarItem = null;
+                }
+                refreshQuota();
+            }
+            if (e.affectsConfiguration('antigravityStatus.refreshInterval')) {
+                startRefreshTimer();
+            }
+        });
+        context.subscriptions.push(configWatcher);
+
+        // Start refresh timer
+        startRefreshTimer();
+    } catch (error) {
+        console.error('Antigravity Status activation failed:', error);
+        if (outputChannel) {
+            log(`Activation failed: ${error}`, 'error');
+        }
+    }
 }
 
 /**

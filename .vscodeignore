@@ -1,15 +1,10 @@
 .vscode/**
-.vscode-test/**
-out/test/**
-src/**
-wasm/**
-!wasm/Cargo.toml
-node_modules/**
+.github/**
 .gitignore
-.eslintrc.json
-*.map
-*.ts
-!*.d.ts
+.vscodeignore
 tsconfig.json
-**/*.md
-!README.md
+.eslintrc.json
+src/**
+out/test/**
+*.vsix
+# node_modules is NOT here, so vsce will include production deps
