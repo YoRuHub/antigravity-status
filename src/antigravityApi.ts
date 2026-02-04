@@ -107,7 +107,8 @@ export class AntigravityApiClient {
         if (context) {
             this.credentialManager = new CredentialManager(context);
         }
-        this.port = port;
+        // Validate port range (1024-65535)
+        this.port = (port >= 1024 && port <= 65535) ? port : 5000;
         this.csrfToken = csrfToken;
     }
 

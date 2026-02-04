@@ -1,8 +1,8 @@
 {
     "name": "antigravity-status",
     "displayName": "Antigravity Status",
-    "description": "Monitor Antigravity/Windsurf/Cursor AI quota usage in VS Code status bar",
-    "version": "0.1.0",
+    "description": "Monitor Antigravity AI quota usage in the status bar",
+    "version": "1.0.0",
     "publisher": "antigravity",
     "icon": "assets/icon.png",
     "engines": {
@@ -83,6 +83,15 @@
                     "default": "right",
                     "description": "The alignment of the status bar item (left or right).",
                     "order": 7
+                },
+                "antigravityStatus.hiddenModels": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "List of model IDs to hide from the status bar.",
+                    "order": 10
                 }
             }
         }

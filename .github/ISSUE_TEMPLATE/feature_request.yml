@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest an idea for this project
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        機能要望ありがとうございます。
+  - type: textarea
+    id: solution
+    attributes:
+      label: 実装したい機能の概要
+      description: どのような機能を追加したいか記述してください。
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 背景や理由
+      description: なぜその機能が必要か、どのような課題が解決されるか記述してください。
+    validations:
+      required: true

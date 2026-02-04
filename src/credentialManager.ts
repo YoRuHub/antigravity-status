@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
+import * as crypto from 'crypto';
 import { execSync } from 'child_process';
 
 export interface OAuthCredentials {
@@ -37,7 +38,8 @@ export class CredentialManager {
             return null;
         }
 
-        const tempDB = path.join(os.tmpdir(), `antigravity_state_${Date.now()}.vscdb`);
+        const randomId = crypto.randomBytes(4).toString('hex');
+        const tempDB = path.join(os.tmpdir(), `antigravity_state_${Date.now()}_${randomId}.vscdb`);
 
         try {
             fs.copyFileSync(dbPath, tempDB);
@@ -150,7 +152,8 @@ export class CredentialManager {
             return null;
         }
 
-        const tempDB = path.join(os.tmpdir(), `antigravity_state_${Date.now()}.vscdb`);
+        const randomId = crypto.randomBytes(4).toString('hex');
+        const tempDB = path.join(os.tmpdir(), `antigravity_state_${Date.now()}_${randomId}.vscdb`);
 
         try {
             fs.copyFileSync(dbPath, tempDB);

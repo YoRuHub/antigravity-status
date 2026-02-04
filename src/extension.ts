@@ -70,7 +70,6 @@ async function connectToAntigravity(): Promise<boolean> {
         hunter = new ProcessHunter();
     }
 
-    log('Scanning for Antigravity process...');
     showLoading();
 
     try {
@@ -82,10 +81,8 @@ async function connectToAntigravity(): Promise<boolean> {
                 connectionInfo.connectPort,
                 connectionInfo.csrfToken
             );
-            log(`Connected to Antigravity on port ${connectionInfo.connectPort}`);
             return true;
         } else {
-            log('Antigravity process not found', 'warn');
             return false;
         }
     } catch (error) {
@@ -303,15 +300,12 @@ async function refreshQuota(): Promise<void> {
     }
 
     try {
-        log('Refreshing quota data...');
         const snapshot = await apiClient!.fetchQuotaSnapshot(
             WARNING_THRESHOLD,
             CRITICAL_THRESHOLD
         );
 
         if (!snapshot.isConnected) {
-            // Connection lost, try to reconnect
-            log('Connection lost, attempting reconnect...', 'warn');
             apiClient = null;
             const connected = await connectToAntigravity();
             if (connected) {
@@ -327,8 +321,8 @@ async function refreshQuota(): Promise<void> {
             return;
         }
 
+
         updateStatusBar(snapshot, config);
-        log(`Quota refreshed: ${snapshot.models.length} model(s)`);
     } catch (error) {
         log(`Refresh failed: ${error}`, 'error');
         if (loadingStatusBarItem) {
@@ -359,8 +353,6 @@ function startRefreshTimer(): void {
     refreshTimer = setInterval(() => {
         refreshQuota();
     }, config.refreshInterval * 1000);
-
-    log(`Refresh timer started (interval: ${config.refreshInterval}s)`);
 }
 
 /**
@@ -506,8 +498,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     outputChannel = vscode.window.createOutputChannel('Antigravity Status');
     context.subscriptions.push(outputChannel);
 
-    log('Antigravity Status extension activating...');
-
     // Show loading indicator initially
     showLoading();
 
@@ -535,7 +525,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
     // Watch for configuration changes
     const configWatcher = vscode.workspace.onDidChangeConfiguration((e) => {
         if (e.affectsConfiguration('antigravityStatus')) {
-            log('Configuration changed, restarting refresh timer');
             startRefreshTimer();
         }
     });
@@ -543,8 +532,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
     // Start refresh timer
     startRefreshTimer();
-
-    log('Antigravity Status extension activated');
 }
 
 /**
@@ -555,6 +542,4 @@ export function deactivate(): void {
         clearInterval(refreshTimer);
         refreshTimer = null;
     }
-
-    log('Antigravity Status extension deactivated');
 }
