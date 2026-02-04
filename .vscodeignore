@@ -1,0 +1,15 @@
+.vscode/**
+.vscode-test/**
+out/test/**
+src/**
+wasm/**
+!wasm/Cargo.toml
+node_modules/**
+.gitignore
+.eslintrc.json
+*.map
+*.ts
+!*.d.ts
+tsconfig.json
+**/*.md
+!README.md

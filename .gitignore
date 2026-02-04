@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+pkg/
+out/
+
+# Rust build artifacts
+wasm/target/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Package
+*.vsix
