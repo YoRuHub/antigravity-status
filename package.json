@@ -1,7 +1,7 @@
 {
     "name": "antigravity-status",
-    "displayName": "Antigravity Status",
-    "description": "Monitor Antigravity AI quota usage in the status bar",
+    "displayName": "%antigravityStatus.displayName%",
+    "description": "%antigravityStatus.description%",
     "version": "1.0.0",
     "publisher": "antigravity",
     "icon": "assets/icon.png",
@@ -32,38 +32,38 @@
         "commands": [
             {
                 "command": "antigravityStatus.refresh",
-                "title": "Refresh Quota",
+                "title": "%antigravityStatus.commands.refresh.title%",
                 "category": "Antigravity Status",
                 "icon": "$(sync)"
             },
             {
                 "command": "antigravityStatus.showDetails",
-                "title": "Show Quota Details",
+                "title": "%antigravityStatus.commands.showDetails.title%",
                 "category": "Antigravity Status",
                 "icon": "$(info)"
             },
             {
                 "command": "antigravityStatus.configureModels",
-                "title": "Configure Visible Models",
+                "title": "%antigravityStatus.commands.configureModels.title%",
                 "category": "Antigravity Status",
                 "icon": "$(gear)"
             }
         ],
         "configuration": {
-            "title": "Antigravity Status",
+            "title": "%antigravityStatus.configuration.title%",
             "properties": {
                 "antigravityStatus.refreshInterval": {
                     "type": "number",
                     "default": 120,
                     "minimum": 30,
                     "maximum": 3600,
-                    "description": "Interval in seconds to refresh quota data (30-3600).",
+                    "description": "%antigravityStatus.configuration.refreshInterval.description%",
                     "order": 1
                 },
                 "antigravityStatus.showNotifications": {
                     "type": "boolean",
                     "default": true,
-                    "description": "Show notification when quota remains below the notification threshold.",
+                    "description": "%antigravityStatus.configuration.showNotifications.description%",
                     "order": 5
                 },
                 "antigravityStatus.notificationThreshold": {
@@ -71,7 +71,7 @@
                     "default": 30,
                     "minimum": 1,
                     "maximum": 100,
-                    "description": "Threshold percentage for sending notifications (1-100). Defaults to 30%.",
+                    "description": "%antigravityStatus.configuration.notificationThreshold.description%",
                     "order": 6
                 },
                 "antigravityStatus.statusBarPosition": {
@@ -81,7 +81,7 @@
                         "right"
                     ],
                     "default": "right",
-                    "description": "The alignment of the status bar item (left or right).",
+                    "description": "%antigravityStatus.configuration.statusBarPosition.description%",
                     "order": 7
                 },
                 "antigravityStatus.hiddenModels": {
@@ -90,8 +90,19 @@
                         "type": "string"
                     },
                     "default": [],
-                    "description": "List of model IDs to hide from the status bar.",
+                    "description": "%antigravityStatus.configuration.hiddenModels.description%",
                     "order": 10
+                },
+                "antigravityStatus.language": {
+                    "type": "string",
+                    "enum": [
+                        "Auto",
+                        "English",
+                        "Japanese"
+                    ],
+                    "default": "Auto",
+                    "description": "%antigravityStatus.configuration.language.description%",
+                    "order": 15
                 }
             }
         }

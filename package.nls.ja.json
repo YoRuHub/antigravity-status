@@ -1,0 +1,14 @@
+{
+    "antigravityStatus.displayName": "Antigravity Status",
+    "antigravityStatus.description": "ステータスバーで Antigravity の AI クォータ使用状況を監視します",
+    "antigravityStatus.commands.refresh.title": "クォータを更新",
+    "antigravityStatus.commands.showDetails.title": "クォータの詳細を表示",
+    "antigravityStatus.commands.configureModels.title": "表示モデルの設定",
+    "antigravityStatus.configuration.title": "Antigravity Status",
+    "antigravityStatus.configuration.refreshInterval.description": "クォータデータを更新する間隔（秒） (30-3600)。",
+    "antigravityStatus.configuration.showNotifications.description": "クォータが通知閾値を下回ったときに通知を表示します。",
+    "antigravityStatus.configuration.notificationThreshold.description": "通知を送信する残量の閾値（%） (1-100)。デフォルトは 30%。",
+    "antigravityStatus.configuration.statusBarPosition.description": "ステータスバー項目の配置（左または右）。",
+    "antigravityStatus.configuration.hiddenModels.description": "ステータスバーに表示しないモデル ID のリスト。",
+    "antigravityStatus.configuration.language.description": "拡張機能の表示言語。'Auto' はシステム設定に従います。"
+}

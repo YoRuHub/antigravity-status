@@ -13,6 +13,7 @@ import {
     QuotaSnapshot,
     ProcessedModelQuota,
 } from './antigravityApi';
+import { i18n } from './i18n';
 
 // Threshold constants
 const WARNING_THRESHOLD = 50;
@@ -96,24 +97,31 @@ async function connectToAntigravity(): Promise<boolean> {
  */
 function formatTimeUntilReset(ms: number): string {
     if (ms <= 0) {
-        return 'Now';
+        return i18n.t('common.now');
     }
 
     const hours = Math.floor(ms / 3600000);
     const minutes = Math.floor((ms % 3600000) / 60000);
 
     if (hours > 0) {
-        return `${hours}h ${minutes}m`;
+        return `${hours}${i18n.t('common.h')} ${minutes}${i18n.t('common.m')}`;
     }
-    return `${minutes}m`;
+    return `${minutes}${i18n.t('common.m')}`;
 }
 
 /**
  * Format absolute reset time
  */
 function formatAbsoluteTime(msUntilReset: number): string {
-    const resetDate = new Date(Date.now() + msUntilReset);
-    return resetDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    const d = new Date(Date.now() + msUntilReset);
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const date = d.getDate();
+    const hours = d.getHours();
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const seconds = String(d.getSeconds()).padStart(2, '0');
+
+    return `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
 }
 
 /**
@@ -177,8 +185,8 @@ function updateStatusBar(snapshot: QuotaSnapshot, config: ExtensionConfig): void
         if (!loadingStatusBarItem) {
             showLoading();
         }
-        loadingStatusBarItem!.text = '$(warning) No Connection';
-        loadingStatusBarItem!.tooltip = snapshot.errorMessage || 'Not connected to Antigravity';
+        loadingStatusBarItem!.text = `$(warning) ${i18n.t('status.noConnection')}`;
+        loadingStatusBarItem!.tooltip = snapshot.errorMessage || i18n.t('status.notConnectedTooltip');
         loadingStatusBarItem!.color = new vscode.ThemeColor('charts.yellow');
         loadingStatusBarItem!.show();
         return;
@@ -188,8 +196,8 @@ function updateStatusBar(snapshot: QuotaSnapshot, config: ExtensionConfig): void
         if (!loadingStatusBarItem) {
             showLoading();
         }
-        loadingStatusBarItem!.text = '$(info) No Data';
-        loadingStatusBarItem!.tooltip = 'No model quota information available';
+        loadingStatusBarItem!.text = `$(info) ${i18n.t('status.noData')}`;
+        loadingStatusBarItem!.tooltip = i18n.t('status.noDataTooltip');
         loadingStatusBarItem!.show();
         return;
     }
@@ -205,8 +213,8 @@ function updateStatusBar(snapshot: QuotaSnapshot, config: ExtensionConfig): void
         if (!loadingStatusBarItem) {
             showLoading();
         }
-        loadingStatusBarItem!.text = '$(info) No Visible Models';
-        loadingStatusBarItem!.tooltip = 'All models are hidden in settings. Click to configure.';
+        loadingStatusBarItem!.text = `$(info) ${i18n.t('status.noVisibleModels')}`;
+        loadingStatusBarItem!.tooltip = i18n.t('status.noVisibleModelsTooltip');
         loadingStatusBarItem!.show();
         return;
     }
@@ -248,7 +256,7 @@ function updateStatusBar(snapshot: QuotaSnapshot, config: ExtensionConfig): void
             : '';
 
         const tooltipMd = new vscode.MarkdownString(
-            `| | |\n| --- | --- |\n| <img src="${iconUri.toString()}" height="52"> | ${logoHtml}**${model.label}**<br>Reset Time: ${resetClock}<br>(${resetRemaining} remaining) |`
+            `| | |\n| --- | --- |\n| <img src="${iconUri.toString()}" height="52"> | ${logoHtml}**${model.label}**<br>${i18n.t('tooltip.resetTime', resetClock)}<br>${i18n.t('tooltip.remainingValue', resetRemaining)} |`
         );
         tooltipMd.isTrusted = true;
         tooltipMd.supportHtml = true; // Enable <br> support
@@ -266,7 +274,7 @@ function updateStatusBar(snapshot: QuotaSnapshot, config: ExtensionConfig): void
                 if (!notifiedModels.has(model.modelId)) {
                     notifiedModels.add(model.modelId);
                     vscode.window.showWarningMessage(
-                        `Antigravity: ${model.label} quota is low (${Math.round(model.remainingPercentage)}%)`
+                        i18n.t('status.quotaLow', model.label, Math.round(model.remainingPercentage))
                     );
                 }
             } else {
@@ -290,8 +298,8 @@ async function refreshQuota(): Promise<void> {
         const connected = await connectToAntigravity();
         if (!connected) {
             if (loadingStatusBarItem) {
-                loadingStatusBarItem.text = '$(warning) Not found';
-                loadingStatusBarItem.tooltip = 'Antigravity process not found. Make sure Windsurf/Cursor is running.';
+                loadingStatusBarItem.text = `$(warning) ${i18n.t('status.noConnection')}`;
+                loadingStatusBarItem.tooltip = i18n.t('status.notConnectedTooltip');
                 loadingStatusBarItem.color = new vscode.ThemeColor('charts.yellow');
                 loadingStatusBarItem.show();
             }
@@ -326,8 +334,8 @@ async function refreshQuota(): Promise<void> {
     } catch (error) {
         log(`Refresh failed: ${error}`, 'error');
         if (loadingStatusBarItem) {
-            loadingStatusBarItem.text = '$(error) Error';
-            loadingStatusBarItem.tooltip = `Failed to fetch quota: ${error}`;
+            loadingStatusBarItem.text = `$(error) ${i18n.t('status.refreshFailed')}`;
+            loadingStatusBarItem.tooltip = i18n.t('log.refreshFailed', error);
             loadingStatusBarItem.color = new vscode.ThemeColor('charts.red');
             loadingStatusBarItem.show();
         }
@@ -364,7 +372,7 @@ async function showQuotaDetails(): Promise<void> {
     if (!apiClient) {
         const connected = await connectToAntigravity();
         if (!connected) {
-            vscode.window.showWarningMessage('Antigravity process not found. Make sure Windsurf/Cursor is running.');
+            vscode.window.showWarningMessage(i18n.t('status.processNotFound'));
             return;
         }
     }
@@ -376,7 +384,7 @@ async function showQuotaDetails(): Promise<void> {
         );
 
         if (!snapshot.isConnected) {
-            vscode.window.showWarningMessage(`Connection error: ${snapshot.errorMessage}`);
+            vscode.window.showWarningMessage(i18n.t('log.connectionError', snapshot.errorMessage));
             return;
         }
 
@@ -385,8 +393,8 @@ async function showQuotaDetails(): Promise<void> {
 
             return {
                 label: `${icon} ${model.label}`,
-                description: `${model.remainingPercentage}% remaining`,
-                detail: `Reset in ${formatTimeUntilReset(model.timeUntilReset)}`,
+                description: i18n.t('details.remaining', model.remainingPercentage),
+                detail: i18n.t('details.resetIn', formatTimeUntilReset(model.timeUntilReset)),
             };
         });
 
@@ -395,14 +403,14 @@ async function showQuotaDetails(): Promise<void> {
             items.unshift({
                 label: `$(account) ${snapshot.userInfo.email}`,
                 description: snapshot.userInfo.planName,
-                detail: `Prompt Credits: ${snapshot.userInfo.availablePromptCredits.toLocaleString()} / ${snapshot.userInfo.monthlyPromptCredits.toLocaleString()}`,
+                detail: i18n.t('details.promptCredits', snapshot.userInfo.availablePromptCredits.toLocaleString(), snapshot.userInfo.monthlyPromptCredits.toLocaleString()),
                 kind: vscode.QuickPickItemKind.Separator,
             } as vscode.QuickPickItem);
         }
 
         await vscode.window.showQuickPick(items, {
-            placeHolder: 'Antigravity Quota Status',
-            title: 'Quota Details',
+            placeHolder: i18n.t('details.placeHolder'),
+            title: i18n.t('details.title'),
         });
     } catch (error) {
         vscode.window.showErrorMessage(`Failed to fetch quota details: ${error}`);
@@ -446,7 +454,7 @@ async function configureVisibleModels(): Promise<void> {
             return {
                 label: m.label,
                 description: `${colorIcon} ${m.remainingPercentage}%`,
-                detail: `Reset in ${formatTimeUntilReset(m.timeUntilReset)} (ID: ${m.modelId})`,
+                detail: i18n.t('config.resetInId', formatTimeUntilReset(m.timeUntilReset), m.modelId),
                 picked: isVisible,
                 modelId: m.modelId
             };
@@ -454,8 +462,8 @@ async function configureVisibleModels(): Promise<void> {
 
         const selected = await vscode.window.showQuickPick(items, {
             canPickMany: true,
-            placeHolder: 'Select models to show in the status bar (Check to show)',
-            title: 'Manage Model Visibility'
+            placeHolder: i18n.t('config.placeHolder'),
+            title: i18n.t('config.title')
         });
 
         if (selected) {
@@ -469,7 +477,7 @@ async function configureVisibleModels(): Promise<void> {
                 vscode.ConfigurationTarget.Global
             );
 
-            vscode.window.showInformationMessage(`Antigravity: Updated visible models.`);
+            vscode.window.showInformationMessage(i18n.t('status.updatedVisibleModels'));
             refreshQuota();
         }
     } catch (error) {
@@ -524,7 +532,20 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
 
     // Watch for configuration changes
     const configWatcher = vscode.workspace.onDidChangeConfiguration((e) => {
-        if (e.affectsConfiguration('antigravityStatus')) {
+        if (e.affectsConfiguration('antigravityStatus.language')) {
+            i18n.updateLanguage();
+            refreshQuota(); // Redraw UI with new language
+        }
+        if (e.affectsConfiguration('antigravityStatus.statusBarPosition')) {
+            // Re-create items to apply new position
+            clearStatusBarItems();
+            if (loadingStatusBarItem) {
+                loadingStatusBarItem.dispose();
+                loadingStatusBarItem = null;
+            }
+            refreshQuota();
+        }
+        if (e.affectsConfiguration('antigravityStatus.refreshInterval')) {
             startRefreshTimer();
         }
     });

@@ -7,6 +7,7 @@ import * as https from 'https';
 import * as vscode from 'vscode';
 import axios from 'axios';
 import { CredentialManager } from './credentialManager';
+import { i18n } from './i18n';
 
 const TIMING = { HTTP_TIMEOUT_MS: 10000 } as const;
 
@@ -129,7 +130,7 @@ export class AntigravityApiClient {
                 return localSnapshot;
             }
 
-            throw new Error('All API sources failed');
+            throw new Error(i18n.t('error.apiStatusFailed'));
         } catch (error) {
             return {
                 timestamp: new Date(),
@@ -326,8 +327,8 @@ export class AntigravityApiClient {
         const userInfo: UserInfo | undefined = userStatus ? {
             name: userStatus.name || '',
             email: userStatus.email || '',
-            planName: userStatus.planStatus?.planInfo?.planName || 'Unknown',
-            tier: userStatus.userTier?.name || 'Unknown',
+            planName: userStatus.planStatus?.planInfo?.planName || i18n.t('common.unknown'),
+            tier: userStatus.userTier?.name || i18n.t('common.unknown'),
             monthlyPromptCredits: userStatus.planStatus?.planInfo?.monthlyPromptCredits || 0,
             availablePromptCredits: userStatus.planStatus?.availablePromptCredits || 0,
         } : undefined;
@@ -345,7 +346,7 @@ export class AntigravityApiClient {
             const status = this.determineStatus(remainingPercentage, warningThreshold, criticalThreshold);
 
             models.push({
-                label: config.label || 'Unknown',
+                label: config.label || i18n.t('common.unknown'),
                 modelId: config.modelOrAlias?.model || config.label || '',
                 remainingPercentage,
                 resetTime,

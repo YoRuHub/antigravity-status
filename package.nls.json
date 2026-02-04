@@ -1,0 +1,14 @@
+{
+    "antigravityStatus.displayName": "Antigravity Status",
+    "antigravityStatus.description": "Monitor Antigravity AI quota usage in the status bar",
+    "antigravityStatus.commands.refresh.title": "Refresh Quota",
+    "antigravityStatus.commands.showDetails.title": "Show Quota Details",
+    "antigravityStatus.commands.configureModels.title": "Configure Visible Models",
+    "antigravityStatus.configuration.title": "Antigravity Status",
+    "antigravityStatus.configuration.refreshInterval.description": "Interval in seconds to refresh quota data (30-3600).",
+    "antigravityStatus.configuration.showNotifications.description": "Show notification when quota remains below the notification threshold.",
+    "antigravityStatus.configuration.notificationThreshold.description": "Threshold percentage for sending notifications (1-100). Defaults to 30%.",
+    "antigravityStatus.configuration.statusBarPosition.description": "The alignment of the status bar item (left or right).",
+    "antigravityStatus.configuration.hiddenModels.description": "List of model IDs to hide from the status bar.",
+    "antigravityStatus.configuration.language.description": "The display language for the extension UI. 'Auto' follows the system setting."
+}
