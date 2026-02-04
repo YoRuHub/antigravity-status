@@ -1,7 +1,7 @@
 {
     "name": "antigravity-status",
-    "displayName": "%antigravityStatus.displayName%",
-    "description": "%antigravityStatus.description%",
+    "displayName": "Antigravity Status",
+    "description": "Monitor Antigravity AI quota usage in the status bar",
     "version": "1.0.0",
     "publisher": "AntigravityStatus",
     "icon": "assets/icon.png",
