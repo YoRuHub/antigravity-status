@@ -1,8 +1,5 @@
 /**
  * Antigravity Status VSCode Extension
- *
- * Monitors Antigravity API quota usage and displays status in VS Code status bar.
- * Connects to local Antigravity Language Server process to fetch real quota data.
  */
 
 import * as vscode from 'vscode';
@@ -60,7 +57,13 @@ function getConfig(): ExtensionConfig {
 function log(message: string, level: 'info' | 'warn' | 'error' = 'info'): void {
     const timestamp = new Date().toISOString();
     const prefix = level === 'error' ? '❌' : level === 'warn' ? '⚠️' : 'ℹ️';
-    outputChannel.appendLine(`[${timestamp}] ${prefix} ${message}`);
+    const line = `[${timestamp}] ${prefix} ${message}`;
+
+    if (outputChannel) {
+        outputChannel.appendLine(line);
+    } else {
+        console.log(`[Antigravity Status] ${line}`);
+    }
 }
 
 /**
@@ -329,7 +332,6 @@ async function refreshQuota(): Promise<void> {
             return;
         }
 
-
         updateStatusBar(snapshot, config);
     } catch (error) {
         log(`Refresh failed: ${error}`, 'error');
@@ -497,13 +499,9 @@ function openExtensionSettings(): void {
  */
 export async function activate(context: vscode.ExtensionContext): Promise<void> {
     extensionContext = context;
-    // Set network timeout for IPv4/IPv6 auto-selection
-    if (net.setDefaultAutoSelectFamilyAttemptTimeout) {
-        net.setDefaultAutoSelectFamilyAttemptTimeout(1000);
-    }
 
     try {
-        // Create output channel FIRST so we can log errors
+        // 1. Create output channel immediately
         outputChannel = vscode.window.createOutputChannel('Antigravity Status');
         context.subscriptions.push(outputChannel);
 
@@ -558,6 +556,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         // Start refresh timer
         startRefreshTimer();
     } catch (error) {
+        log(`Activation failed at top-level: ${error}`, 'error');
         console.error('Antigravity Status activation failed:', error);
     }
 }
