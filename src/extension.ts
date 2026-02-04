@@ -507,9 +507,8 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         outputChannel = vscode.window.createOutputChannel('Antigravity Status');
         context.subscriptions.push(outputChannel);
 
-        // Initialize i18n now that APIs are safe
+        // Initialize i18n
         i18n.updateLanguage();
-        log('Antigravity Status: i18n initialized');
 
         // Show loading indicator initially
         showLoading();
@@ -560,9 +559,6 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         startRefreshTimer();
     } catch (error) {
         console.error('Antigravity Status activation failed:', error);
-        if (outputChannel) {
-            log(`Activation failed: ${error}`, 'error');
-        }
     }
 }
 
