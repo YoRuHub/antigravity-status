@@ -491,7 +491,7 @@ async function configureVisibleModels(): Promise<void> {
  * Open extension settings
  */
 function openExtensionSettings(): void {
-    vscode.commands.executeCommand('workbench.action.openSettings', '@ext:antigravity.antigravity-status');
+    vscode.commands.executeCommand('workbench.action.openSettings', '@ext:yoruhub.antigravity-status');
 }
 
 /**

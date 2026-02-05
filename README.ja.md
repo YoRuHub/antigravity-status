@@ -7,10 +7,10 @@
  Antigravity エディタの AI クォータ使用状況をステータスバーでリアルタイムに監視
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gray.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?style=flat-square)](https://github.com/YoRuHub/antigravity-status)
+[![Version](https://img.shields.io/badge/version-0.0.2-blue.svg?style=flat-square)](https://github.com/YoRuHub/antigravity-status)
 [![Platform: Antigravity](https://img.shields.io/badge/Platform-Antigravity-0052cc.svg?style=flat-square)](https://github.com/yoruhub/antigravity-status)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-green.svg?style=flat-square)](https://nodejs.org/)
-[![VS Code](https://img.shields.io/badge/VS%20Code-%3E%3D1.90.0-007acc.svg?style=flat-square)](https://code.visualstudio.com/)
+[![VS Code](https://img.shields.io/badge/VS%20Code-%3E%3D1.80.0-007acc.svg?style=flat-square)](https://code.visualstudio.com/)
 [![i18n](https://img.shields.io/badge/i18n-en%2Fja-orange.svg?style=flat-square)](src/i18n/translations.ts)
 
 [English](README.md) | 日本語

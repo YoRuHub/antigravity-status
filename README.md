@@ -5,9 +5,9 @@
 Real-time AI quota monitoring in the status bar for Antigravity Editor
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gray.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-0.0.1-blue.svg?style=flat-square)](https://github.com/YoRuHub/antigravity-status)
+[![Version](https://img.shields.io/badge/version-0.0.2-blue.svg?style=flat-square)](https://github.com/YoRuHub/antigravity-status)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20.0.0-green.svg?style=flat-square)](https://nodejs.org/)
-[![VS Code](https://img.shields.io/badge/VS%20Code-%3E%3D1.90.0-007acc.svg?style=flat-square)](https://code.visualstudio.com/)
+[![VS Code](https://img.shields.io/badge/VS%20Code-%3E%3D1.80.0-007acc.svg?style=flat-square)](https://code.visualstudio.com/)
 
 English | [日本語](README.ja.md)
 
